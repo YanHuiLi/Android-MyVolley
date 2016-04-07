@@ -10,9 +10,20 @@ package com.example.archer.myvolley;
  * 4.缓存
  * 5.多级别的取消请求
  * 6.与Activity的生命周期联动
+ *
+ * 获取volley
  */
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,5 +31,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getJSONVolley();
     }
+
+
+    //获取json字符串
+    public void getJSONVolley(){
+        RequestQueue requestQueue= Volley.newRequestQueue(this);
+
+        String JSONDataUrl="http://v.juhe.cn/weather/index?format=2&cityname=%E5%BC%A5%E5%8B%92&key=407";
+        JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.GET, JSONDataUrl, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("response" + response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("对不起有问题");
+            }
+        }
+        );
+                requestQueue.add(jsonObjectRequest);
+
+    }
+
 }
